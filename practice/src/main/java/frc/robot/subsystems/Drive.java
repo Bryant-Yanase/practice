@@ -8,10 +8,13 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.Teleop.ArcadeDrive;
+import frc.robot.commands.Teleop.Tank_Drive;
 
 /**
  * Add your docs here.
@@ -40,6 +43,19 @@ public class Drive extends Subsystem {
 
     m_rightSlave1.follow(m_rightMaster);
     m_rightSlave2.follow(m_rightMaster);
+
+    m_leftMaster.setInverted(true);
+    m_leftSlave1.setInverted(true);
+    m_leftSlave2.setInverted(true);
+    m_rightMaster.setInverted(false);
+    m_rightSlave1.setInverted(false);
+    m_rightSlave2.setInverted(false);
+
+    m_leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    m_rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+
+    m_leftMaster.setSensorPhase(true);
+    m_rightMaster.setSensorPhase(false);
   }
 
   public double getRightPosition () {
@@ -52,20 +68,16 @@ public class Drive extends Subsystem {
 
   }
 
-  public double getaverageposition(){
+  public double getAveragePosition(){
     return (getLeftPosition() + getRightPosition() / 2);
 
   }
 
   public void setPower(double RightPower, double LeftPower){
     m_leftMaster.set(ControlMode.PercentOutput, LeftPower);
-    m_leftSlave1.set(ControlMode.PercentOutput, LeftPower);
-    m_leftSlave2.set(ControlMode.PercentOutput, LeftPower);
 
     m_rightMaster.set(ControlMode.PercentOutput, RightPower);
-    m_rightSlave1.set(ControlMode.PercentOutput, RightPower);
-    m_rightSlave2.set(ControlMode.PercentOutput, RightPower);
-    
+  
 
   }
 
@@ -76,5 +88,7 @@ public class Drive extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new ArcadeDrive());
+    setDefaultCommand(new Tank_Drive());
   }
 }

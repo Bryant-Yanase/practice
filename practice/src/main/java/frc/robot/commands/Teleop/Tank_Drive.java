@@ -33,7 +33,7 @@ public class Tank_Drive extends Command {
     LeftPower = Robot.m_oi.getLeftY();
     RightPower = Robot.m_oi.getRightY();
 
-    Robot.drive.setPower(RightPowergit , LeftPower);
+    Robot.drive.setPower(RightPower, LeftPower);
 
   }
 
